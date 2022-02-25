@@ -81,7 +81,7 @@ async fn main() -> web3::contract::Result<()> {
     let price_data: BitstampPriceData = serde_json::from_slice(&json).unwrap();
     // println!("{:#?}", price_data);
 
-    println!("Length: {:#?}", price_data.data.ohlc.len());
+    println!("Days data length: {:#?}", price_data.data.ohlc.len());
 
     let mut total = 0.0;
     for data in &price_data.data.ohlc {
@@ -92,7 +92,7 @@ async fn main() -> web3::contract::Result<()> {
 
     let average = total / length;
 
-    println!("Average: {:#?}", average);
+    println!("20 day monving average: {:#?}", average);
 
     ///////////////////////
     //
@@ -116,7 +116,7 @@ async fn main() -> web3::contract::Result<()> {
 
     let current_price_data: BitstampCurrentPriceData = serde_json::from_slice(&json).unwrap();
 
-    println!("Last: {:#?}", current_price_data.last);
+    println!("Current Price: {:#?}", current_price_data.last);
 
     ///////////////////////
     //
@@ -175,10 +175,8 @@ async fn main() -> web3::contract::Result<()> {
 
     // Build current price and round
     let price_str_rounded = format!("{:.0}", f64::from_str(&current_price_data.last).unwrap());
-    println!("price_str_rounded {}", price_str_rounded);
     let price_i32 = price_str_rounded.parse::<i32>().unwrap();
     let price = U256::from(price_i32);
-    println!("Rounded Price {}", price);
 
     // Check which token has a balance
     if weth_balance_of > usdt_balance_of {
